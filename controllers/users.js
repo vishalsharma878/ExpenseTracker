@@ -1,8 +1,12 @@
+const bcrypt = require('bcrypt')
 const user = require('../models/user')
 
 async function userData(req, res){
     try{
       const userInfo = req.body;
+      const password = req.body.password;
+      const hashPassword = await bcrypt.hash(password, 10);
+      userInfo.password = hashPassword;
       
       const newUser = await user.create(userInfo);
       res.status(201).json(newUser);
@@ -26,15 +30,12 @@ async function loginCheck(req, res){
       return res.status(401).json({ message: 'Invalid email or password' });
     }
 
-    const passwordMatch = await user.findOne({
-      where: {password: password}
-    })
+    const passwordMatch = await bcrypt.compare(password, userRecord.password);
 
     if (!passwordMatch) {
 
       return res.status(401).json({ message: 'Invalid email or password' });
     }
-
     res.status(200).json({ message: 'Login successful' });
   } 
   catch (error) {
