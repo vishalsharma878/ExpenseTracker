@@ -42,7 +42,10 @@ login.addEventListener('submit', function(e) {
     const loginFormData = getSignUpLoginData();
     login.reset();
     axios.post('http://localhost:3000/user/login', loginFormData)
-    .then(res => alert(res.data.message))
+    .then(res => {
+        alert(res.data.message);
+        window.location.href = 'http://127.0.0.1:5500/views/expense.html';
+    })
     .catch(err => alert(err.response.data.message));
 
 })
