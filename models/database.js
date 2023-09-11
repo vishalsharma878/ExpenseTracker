@@ -9,10 +9,6 @@ const User = sequelize.define('expense', {
         allowNull: false,
         primaryKey: true,
     },
-    email:{
-          type: Sequelize.STRING,
-          allowNull: false,
-    },
     expenseAmount:{
         type: Sequelize.STRING,
         allowNull: false,

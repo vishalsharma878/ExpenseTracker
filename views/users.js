@@ -44,6 +44,7 @@ login.addEventListener('submit', function(e) {
     axios.post('http://localhost:3000/user/login', loginFormData)
     .then(res => {
         alert(res.data.message);
+        localStorage.setItem('token', res.data.token)
         window.location.href = 'http://127.0.0.1:5500/views/expense.html';
     })
     .catch(err => alert(err.response.data.message));

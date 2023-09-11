@@ -1,5 +1,6 @@
 const bcrypt = require('bcrypt')
 const user = require('../models/user')
+const jwt = require('jsonwebtoken')
 
 async function userData(req, res){
     try{
@@ -15,6 +16,10 @@ async function userData(req, res){
      console.log(error); // Log the actual error object for debugging
      res.status(500).json({ error: "Internal server error" }); 
     }
+}
+
+function generateAccessToken(id) {
+  return jwt.sign({userId: id}, '939ehjei838');
 }
 
 async function loginCheck(req, res){
@@ -36,7 +41,7 @@ async function loginCheck(req, res){
 
       return res.status(401).json({ message: 'Invalid email or password' });
     }
-    res.status(200).json({ message: 'Login successful' });
+    res.status(200).json({ message: 'Login successful', token:  generateAccessToken(userRecord.id)});
   } 
   catch (error) {
     res.status(500).json({ message: 'Internal server error' });
