@@ -1,29 +1,20 @@
-const expense = require('../models/database')
+const Expense = require('../models/database')
 
 exports.deleteData = (req, res) => {
-    const id = req.params.id;
-    expense.findByPk(id)
-      .then(user => {
-        if (!user) {
-          // If the user with the given ID doesn't exist, return a 404 response
-          return res.status(404).json({ error: 'User not found' });
-        }
-  
-        // If the user exists, delete it
-        user.destroy()
-          .then(() => {
-            // Send a 204 (No Content) response to indicate successful deletion
-            res.status(204).end();
-          })
-          .catch(error => {
-            // Handle any errors that occur during deletion
-            console.error('Error deleting user:', error);
-            res.status(500).json({ error: 'Internal server error' });
-          });
-      })
-      .catch(error => {
-        // Handle any errors that occur during database retrieval
-        console.error('Error retrieving user:', error);
-        res.status(500).json({ error: 'Internal server error' });
-      });
+  const id = req.params.id;
+  Expense.destroy({ where: { id: id, userId: req.user.id } })
+    .then(expense => {
+      if (!expense) {
+        // If the expense with the given ID and user ID doesn't exist, return a 404 response
+        return res.status(404).json({ error: 'Expense not found' });
+      } else {
+        // Successfully deleted the expense, return a success response
+        return res.status(200).json({ message: 'Expense deleted successfully' });
+      }
+    })
+    .catch(err => {
+      // Handle any errors that occur during the delete operation
+      console.error(err);
+      return res.status(500).json({ error: 'Internal server error' });
+    });
 }

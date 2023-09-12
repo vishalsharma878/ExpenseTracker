@@ -48,8 +48,8 @@ function appendDataToList(amount, description, category, id) {
     button.appendChild(document.createTextNode('Delete'))
     button.addEventListener('click', function () {
         expenseData.removeChild(li);
-        axios.delete(`http://localhost:3000/delete/${id}`)
-        .then(() => console.log("Item deleted succesfully"))
+        axios.delete(`http://localhost:3000/delete/${id}`, {headers: {"Authorization": token}})
+        .then((mesg) => alert(mesg.data.message))
         .catch(err => console.log(err));
         
     });

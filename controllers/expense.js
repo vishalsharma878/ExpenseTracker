@@ -18,7 +18,7 @@ exports.expenseData = (req, res) =>{
 }
 
 exports.getData = (req, res) => {
-    expense.findAll({where: {userID: req.user.id}})
+    expense.findAll({where:{userId: req.user.id}})
       .then((data) => res.status(200).json(data)); // Set status code and send JSON response
   }
  

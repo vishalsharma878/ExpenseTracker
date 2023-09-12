@@ -12,7 +12,7 @@ userRoutes.post('/expense', userAuth.auth, expenseController.expenseData);
 
 userRoutes.get('/expense/get', userAuth.auth, expenseController.getData);
 
-userRoutes.delete('/delete/:id', deleteController.deleteData);
+userRoutes.delete('/delete/:id', userAuth.auth, deleteController.deleteData);
 
 userRoutes.post('/user/signup', userController.userData);
 
