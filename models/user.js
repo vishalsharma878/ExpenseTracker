@@ -22,6 +22,7 @@ const user  = sequelize.define('users', {
         type: Sequelize.STRING,
         alowNull: false
     }
+   //  isPremiumUser:Sequelize.BOOLEAN
 
 });
 

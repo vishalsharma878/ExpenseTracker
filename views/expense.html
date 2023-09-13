@@ -14,6 +14,29 @@
             padding: 0;
         }
 
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 50px;
+            padding: 10px 40px;
+            background-color: #4f89b3;
+            color: #fff;
+        }
+
+        #buyPremiumButton {
+            background-color: #FF5733;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        #buyPremiumButton:hover {
+            background-color: #FF7855;
+        }
+
         .container {
             background-color: #2287ac; /* Background color for the form container */
             border-radius: 8px;
@@ -53,7 +76,7 @@
             display: block;
             width: 100%;
             padding: 10px;
-            background-color: #007bff;
+            background-color: #2304eb;
             color: #fff;
             border: none;
             border-radius: 4px;
@@ -89,8 +112,11 @@
 </head>
 
 <body>
+    <header>
+        <div id="logo">Home</div>
+        <button id="buyPremiumButton">Buy Premium</button>
+    </header>
     <h3>Expense Tracker</h3>
-
     <div class="container">
         <form id="my-form">
             <label for="amount">Choose Expense Amount:</label>
@@ -122,7 +148,7 @@
     <div id="expenseData">
     
     </div>
-
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.4.0/axios.min.js"></script>
     <script src="expense.js"></script>
 </body>

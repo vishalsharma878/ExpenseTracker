@@ -1,3 +1,4 @@
+
 const form = document.getElementById('my-form');
 const token = localStorage.getItem('token');
 
@@ -59,6 +60,34 @@ function appendDataToList(amount, description, category, id) {
    
     expenseData.appendChild(li);
 }
+
+//Buy Premium Button
+const buyPremiumButton = document.getElementById('buyPremiumButton');
+buyPremiumButton.onclick = async function(e){
+  const res = await axios.get('http://localhost:3000/premiummembership', {headers: {
+    "Authorization": token
+}})
+console.log(">>> " + res.data.key_id)
+let options = {
+    "key": res.data.key_id,
+    "order_id": res.data.order.id,
+    "handler": async function (res){
+       await axios.post('http://localhost:3000/purchase/updatestatus', {order_id: options.order_id, payment_id: res.razorpay_payment_id}, {headers: {"Authorization": token}})
+         
+        alert("You are now Premium user")
+    },
+    
+};
+
+const rzpl = new Razorpay(options);
+rzpl.open();
+e.preventDefault();
+
+rzpl.on('payment.failed', function(res){
+    alert("Something went wrong")
+})
+}
+
 
 // Get Data
 

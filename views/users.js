@@ -36,17 +36,22 @@ form.addEventListener('submit', function(e) {
 
 const login  = document.getElementById('login');
 
-login.addEventListener('submit', function(e) {
+login.addEventListener('submit', async function (e) {
     e.preventDefault();
     signup = false;
     const loginFormData = getSignUpLoginData();
     login.reset();
-    axios.post('http://localhost:3000/user/login', loginFormData)
-    .then(res => {
+    
+    try {
+        const res = await axios.post('http://localhost:3000/user/login', loginFormData);
         alert(res.data.message);
-        localStorage.setItem('token', res.data.token)
+        
+        localStorage.setItem('token', res.data.token);
         window.location.href = 'http://127.0.0.1:5500/views/expense.html';
-    })
-    .catch(err => alert(err.response.data.message));
-
-})
+        console.log("after" +res.data);
+    }
+     catch (err) {
+        alert(err.response.data.message);
+    }
+    
+});
