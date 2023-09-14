@@ -71,7 +71,7 @@ leaderBoard.addEventListener('click', () =>{
         window.location.href = 'http://127.0.0.1:5500/views/leader-board.html'
     }
     else{
-        alert("This featur is for Premium user");
+        alert("This Feature is for Premium User");
     }
 })
 //Check if the user is premium user or not

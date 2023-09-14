@@ -25,34 +25,23 @@ exports.getData = async (req, res) => {
       res.status(200).json(data); // Set status code and send JSON response
   }
 
-//Get the expense data in for the leadeboard
+//Get the expense data for the leadeboard
   exports.getAllData = async (req, res) => {
     try{
-    const expenses = await expense.findAll();
-    const users =   await User.findAll();
+        const usersWithTotalExpenses = await User.findAll({
+            attributes: [ 'name', [sequelize.fn('sum', sequelize.col('expenses.expenseAmount')), 'totalExpense']],
+            include: [
+              {
+                model: expense,
+                attributes: []
+              }
+            ],
+                group: ['users.id'],
+                order: [['totalExpense', 'DESC']]
 
-    const expenseSum = {};
-    expenses.forEach((expense) => {
-        if(expenseSum[expense.userId]){
-        expenseSum[expense.userId] = expenseSum[expense.userId] + expense.expenseAmount; 
-        }
-        else{
-            expenseSum[expense.userId] = expense.expenseAmount;
-        }
-    })
-      const usersWithTotalExpenses = [];
-    users.forEach((user) => {
-        let userInObject = expenseSum[user.id]
-        if(userInObject == undefined){
-            userInObject = 0;
-        }
-         usersWithTotalExpenses.push({name: user.name, totalExpense: userInObject})
-    })
-     usersWithTotalExpenses.sort((a, b)=>{
-        if(a.totalExpense<b.totalExpense) return 1;
-        if(a.totalExpense>b.totalExpense) return -1;
-     });
-    res.status(200).json(usersWithTotalExpenses);
+          });
+
+          res.status(200).json(usersWithTotalExpenses);
     }
     catch(err){
         console.log(err);
