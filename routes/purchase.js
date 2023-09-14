@@ -10,4 +10,6 @@ router.get('/premiummembership', authenticateMidl.auth, purchaseController.purch
 
 router.post('/purchase/updatestatus', authenticateMidl.auth, purchaseController.updateStatus);
 
+router.get('/premium/check-status', authenticateMidl.auth, purchaseController.checkStatus);
+
 module.exports = router;

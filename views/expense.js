@@ -61,20 +61,51 @@ function appendDataToList(amount, description, category, id) {
     expenseData.appendChild(li);
 }
 
-//Buy Premium Button
 const buyPremiumButton = document.getElementById('buyPremiumButton');
+const premiumUser = document.getElementById('premium-status');
+const leaderBoard = document.getElementById('leader-board');
+let checkPremium = false;
+leaderBoard.addEventListener('click', () =>{
+    checkPremiumStatus();
+    if(checkPremium){
+        window.location.href = 'http://127.0.0.1:5500/views/leader-board.html'
+    }
+    else{
+        alert("This featur is for Premium user");
+    }
+})
+//Check if the user is premium user or not
+function checkPremiumStatus(){
+    axios.get('http://localhost:3000/premium/check-status', {headers: {
+        "Authorization": token
+    }})
+    .then((res) => {
+        if(res.data){
+            checkPremium = true;
+            buyPremiumButton.style.display = 'none';
+            premiumUser.style.display = 'block';
+            leaderBoard.style.display = 'block';
+        }
+        else{
+            buyPremiumButton.style.display = 'block';
+        }
+    }).catch (err  => {
+        console.error(err);
+    })
+}
+
+//Buy Premium Button
 buyPremiumButton.onclick = async function(e){
   const res = await axios.get('http://localhost:3000/premiummembership', {headers: {
     "Authorization": token
 }})
-console.log(">>> " + res.data.key_id)
 let options = {
     "key": res.data.key_id,
     "order_id": res.data.order.id,
     "handler": async function (res){
        await axios.post('http://localhost:3000/purchase/updatestatus', {order_id: options.order_id, payment_id: res.razorpay_payment_id}, {headers: {"Authorization": token}})
-         
         alert("You are now Premium user")
+        checkPremiumStatus();
     },
     
 };
@@ -88,7 +119,7 @@ rzpl.on('payment.failed', function(res){
 })
 }
 
-
+checkPremiumStatus();
 // Get Data
 
 axios.get('http://localhost:3000/expense/get', {headers: {

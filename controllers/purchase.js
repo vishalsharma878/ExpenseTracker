@@ -1,12 +1,13 @@
 const Razorpay = require('razorpay');
+const User = require('../models/user');
 
 const Order = require('../models/purchase');
 
 const purchasePremimum = async (req, res) => {
     try {
         let rzp = new Razorpay({
-            key_id: 'rzp_test_vl3cRPDGxtyDfE',
-            key_secret: 'CPDqZLnKHPE8drpdq7YfMqdC'
+            key_id: 'rzp_test_fbEp6CfftylrQp',
+            key_secret: 'YAd9mOqKVdTOlpb9qUfFuOGS'
         })
 
         const amount = 3500;
@@ -16,10 +17,9 @@ const purchasePremimum = async (req, res) => {
                 
             }
             req.user.createOrder({orderId: order.id, status: 'PENDING'}).then(() =>{
-                console.log("oooo "+order.razorpay_payment_id);
                 return res.status(201).json({order, key_id : rzp.key_id})});
         }).catch(err => {
-            throw new Error(err)
+            throw new Error("Eroskmd "+ err)
         })
 
     }catch(err) {
@@ -42,7 +42,7 @@ const updateStatus = async (req, res) => {
             const updateUserPromise = req.user.update({ isPremiumUser: true });
         
             await Promise.all([updateOrderPromise, updateUserPromise]);
-        
+            
             return res.status(202).json({ success: true, message: "Transaction Successful" });
         } catch (err) {
             return res.status(500).json(err);
@@ -50,7 +50,16 @@ const updateStatus = async (req, res) => {
         
 }
 
+const checkStatus = (req, res) => {
+    User.findOne({where: {isPremiumUser: true, id: req.user.id}})
+    .then((user) => res.json(user))
+    .catch (err => {
+        res.status(500).json({ message: 'Internal server error', error: err });
+    })
+}
+
 module.exports ={
     purchasePremimum,
-    updateStatus
+    updateStatus,
+    checkStatus
 }

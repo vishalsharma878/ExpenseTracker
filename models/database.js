@@ -10,7 +10,7 @@ const User = sequelize.define('expense', {
         primaryKey: true,
     },
     expenseAmount:{
-        type: Sequelize.STRING,
+        type: Sequelize.INTEGER,
         allowNull: false,
     },
     description: {

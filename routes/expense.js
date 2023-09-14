@@ -18,5 +18,7 @@ userRoutes.post('/user/signup', userController.userData);
 
 userRoutes.post('/user/login', userController.loginCheck);
 
+userRoutes.get('/premium/leader-board', expenseController.getAllData);
+
 
 module.exports = userRoutes;
