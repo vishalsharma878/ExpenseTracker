@@ -6,10 +6,7 @@ async function getDataForLeaderBoard() {
     let position = 1;
     for (let i = 0; i < obj.length; i++) {
         const data = obj[i];
-        let totalExpense = data.totalExpense;
-        if(totalExpense == null){
-            totalExpense = 0;
-        }
+
         const row = document.createElement('div');
         row.classList.add('leaderboard-row');
 
@@ -23,7 +20,7 @@ async function getDataForLeaderBoard() {
 
         const totalExpenseCol = document.createElement('div');
         totalExpenseCol.classList.add('total-expense-col');
-        totalExpenseCol.textContent = totalExpense;
+        totalExpenseCol.textContent = data.totalExpense;
 
         row.appendChild(positionCol);
         row.appendChild(nameCol);

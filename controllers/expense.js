@@ -18,16 +18,11 @@ exports.expenseData = async (req, res) =>{
   
     //Updating total expense
     try{
-      let previousExpenseAmount = await User.findAll({where: {id: req.user.id}})
-      previousExpenseAmount = previousExpenseAmount[0].totalExpense;
+      
+      const previousExpenseAmount = req.user.totalExpense;
       expenseAmount = Number(expenseAmount);
-
-      if(previousExpenseAmount == null){
-        req.user.update({totalExpense: expenseAmount})
-      }
-      else{
-        req.user.update({totalExpense: previousExpenseAmount + expenseAmount});
-      }
+      req.user.update({totalExpense: previousExpenseAmount + expenseAmount});
+      
       }
       catch(err){
         console.log(err)
