@@ -47,7 +47,7 @@ login.addEventListener('submit', async function (e) {
         alert(res.data.message);
         
         localStorage.setItem('token', res.data.token);
-        window.location.href = 'http://127.0.0.1:5500/views/expense.html';
+        window.location.href = '/views/expense.html';
         console.log("after" +res.data);
     }
      catch (err) {

@@ -68,7 +68,7 @@ let checkPremium = false;
 leaderBoard.addEventListener('click', () =>{
     checkPremiumStatus();
     if(checkPremium){
-        window.location.href = 'http://127.0.0.1:5500/views/leader-board.html'
+        window.location.href = '/views/leader-board.html'
     }
     else{
         alert("This Feature is for Premium User");
