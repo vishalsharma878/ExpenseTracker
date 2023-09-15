@@ -4,31 +4,58 @@ const User = require('../models/user')
 
 
 exports.expenseData = async (req, res) =>{
+  const t = await sequelize.transaction();
     let expenseAmount = req.body.amount;
     const description = req.body.description;
     const category = req.body.category;
-    
-     expense.create({
+    try {
+    const user = await expense.create({
         expenseAmount: expenseAmount,
         description: description,
         category: category,
-        userId: req.user.id,
-    })
-    .then((data) => res.status(200).json(data))
-  
+        userId: req.user.id
+    }, {transaction: t})
+    
     //Updating total expense
-    try{
-      
+    
       const previousExpenseAmount = req.user.totalExpense;
       expenseAmount = Number(expenseAmount);
-      req.user.update({totalExpense: previousExpenseAmount + expenseAmount});
+       await req.user.update({totalExpense: previousExpenseAmount + expenseAmount}, {transaction: t});
       
-      }
+       await t.commit();
+       res.status(200).json(user)
+      
+    }
       catch(err){
+        await t.rollback();
         console.log(err)
       }
     
 }
+
+exports.deleteData = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const expenseData = await expense.findOne({ where: { id: id, userId: req.user.id } }); 
+    if (!expenseData) {
+      // Handle the case where the expense with the given ID doesn't exist
+      return res.status(404).json({ error: 'Expense not found' });
+    }
+
+    await expense.destroy({ where: { id: id, userId: req.user.id } });
+
+    const updatedTotalExpense = req.user.totalExpense - expenseData.expenseAmount;
+
+    // Update the user's totalExpense
+    await req.user.update({ totalExpense: updatedTotalExpense });
+
+    return res.status(200).json({ message: 'Expense deleted successfully' });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ error: 'Internal server error' });
+  }
+};
+
 
 //Get the Expense Data
 exports.getData = async (req, res) => {

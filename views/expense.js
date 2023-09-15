@@ -6,7 +6,7 @@ let isCreate = true;
 
 form.addEventListener('submit', storeData);
 
-function storeData(e) {
+ async function storeData(e) {
     e.preventDefault();
 
     let amount = document.getElementById('amount').value;
@@ -20,15 +20,16 @@ function storeData(e) {
         category: category
     }
 
-
+   try{
    
-    axios.post('http://localhost:3000/expense', obj, {headers: {"Authorization": token}})
-        .then(res => {
-            appendDataToList(amount, description, category, res.data.id);
-           console.log(res.data.id)})
-        .catch(err => alert(err));
-   
+   const res = await axios.post('http://localhost:3000/expense', obj, {headers: {"Authorization": token}})
+        
+    appendDataToList(amount, description, category, res.data.id);
 
+    }
+    catch(err){
+       alert(err.response.error);
+    }
     
 
     form.reset();
@@ -121,7 +122,7 @@ rzpl.on('payment.failed', function(res){
 
 checkPremiumStatus();
 // Get Data
-
+document.addEventListener('DOMContentLoaded', () => {
 axios.get('http://localhost:3000/expense/get', {headers: {
     "Authorization": token
 }})
@@ -135,3 +136,4 @@ function printData(obj) {
         appendDataToList(d.expenseAmount, d.description, d.category, d.id);
     }
 }
+})
