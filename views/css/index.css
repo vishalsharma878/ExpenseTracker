@@ -1,4 +1,4 @@
-body{
+body {
 	margin: 0;
 	padding: 0;
 	display: flex;
@@ -7,25 +7,30 @@ body{
 	min-height: 100vh;
 	font-family: 'Jost', sans-serif;
 	background: linear-gradient(to bottom, #197aa1, #332f64, #24243e);
-}
-.main{
+  }
+  
+  .main {
 	width: 350px;
 	height: 500px;
 	background: red;
 	overflow: hidden;
-	background: url("https://media.istockphoto.com/id/175400834/photo/blue-wall-texture.jpg?b=1&s=612x612&w=0&k=20&c=ve_JYao6JXhuskeYjC8GTxkJV-hkLhXzjn3BFnbjmVU=") no-repeat center/ cover;
+	background: url("https://media.istockphoto.com/id/175400834/photo/blue-wall-texture.jpg?b=1&s=612x612&w=0&k=20&c=ve_JYao6JXhuskeYjC8GTxkJV-hkLhXzjn3BFnbjmVU=") no-repeat center/cover;
 	border-radius: 10px;
 	box-shadow: 5px 20px 50px #000;
-}
-#chk{
+  }
+  
+  #chk {
 	display: none;
-}
-.signup{
+  }
+  
+  .signup,
+  .login {
 	position: relative;
-	width:100%;
+	width: 100%;
 	height: 100%;
-}
-label{
+  }
+  
+  label {
 	color: #fff;
 	font-size: 2.3em;
 	justify-content: center;
@@ -34,8 +39,9 @@ label{
 	font-weight: bold;
 	cursor: pointer;
 	transition: .5s ease-in-out;
-}
-input{
+  }
+  
+  input {
 	width: 60%;
 	height: 20px;
 	background: #e0dede;
@@ -46,8 +52,9 @@ input{
 	border: none;
 	outline: none;
 	border-radius: 5px;
-}
-button{
+  }
+  
+  button {
 	width: 60%;
 	height: 40px;
 	margin: 10px auto;
@@ -63,28 +70,51 @@ button{
 	border-radius: 5px;
 	transition: .2s ease-in;
 	cursor: pointer;
-}
-button:hover{
+  }
+  
+  button:hover {
 	background: #6d44b8;
-}
-.login{
+  }
+  
+  .login {
 	height: 460px;
 	background: #eee;
 	border-radius: 60% / 10%;
 	transform: translateY(-180px);
 	transition: .8s ease-in-out;
-}
-.login label{
+  }
+  
+  .login label {
 	color: #573b8a;
 	transform: scale(.6);
-}
-
-#chk:checked ~ .login{
+  }
+  
+  #chk:checked ~ .login {
 	transform: translateY(-500px);
-}
-#chk:checked ~ .login label{
-	transform: scale(1);	
-}
-#chk:checked ~ .signup label{
+  }
+  
+  #chk:checked ~ .login label {
+	transform: scale(1);
+  }
+  
+  #chk:checked ~ .signup label {
 	transform: scale(.6);
-}
+  }
+  
+  /* Additional CSS styles for the "Forgot Password" form */
+  #forgotPasswordBtn{
+	margin-left: 30%;
+	align-items: center;
+  }
+  #forgotEmail{
+	width: 12rem;
+  }
+  .forgot-password {
+	display: flex;
+	justify-content: center; 
+	align-items: center; 
+	min-height: 70vh; 
+  }
+
+
+  

@@ -9,12 +9,14 @@ const Order = require('./models/purchase');
 
 const expense = require('./routes/expense');
 const purchase = require('./routes/purchase');
+const resetPassword = require('./routes/reset-password');
 
 app.use(cors());
 app.use(bodyParser.json());
 
 app.use(expense);
 app.use(purchase);
+app.use(resetPassword);
 
 User.hasMany(Expense);
 Expense.belongsTo(User);
