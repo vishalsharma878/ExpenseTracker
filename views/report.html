@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Expense Tracker</title>
+    <link rel="stylesheet" href="./css/report.css">
+</head>
+<body>
+    <header>
+        <h1>Expense Tracker</h1>
+    </header>
+
+    <main>
+        <div class="filters">
+            <label for="dateFilter">Select Date Range:</label>
+            <select id="dateFilter">
+                <option value="daily">Daily</option>
+                <option value="weekly">Weekly</option>
+                <option value="monthly">Monthly</option>
+            </select>
+        </div>
+
+        <div class="data">
+    
+            <table id="expenseTable">
+                
+            </table>
+            <table id="incomeTable">
+                
+            </table>
+        </div>
+
+        <button id="downloadButton">Download Expenses</button>
+    </main>
+
+   
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.4.0/axios.min.js"></script>
+    <script src="report.js"></script>
+</body>
+</html>
