@@ -34,7 +34,7 @@ form.addEventListener('submit', function(e) {
     .catch(err => alert("User already exist"));
 })
 
-const login  = document.getElementById('login');
+const login  = document.getElementById('loginForm');
 
 login.addEventListener('submit', async function (e) {
     e.preventDefault();

@@ -1,13 +1,19 @@
-const Sib = require('sib-api-v3-sdk')
-require('dotenv').config()
+const Sib = require('sib-api-v3-sdk');
+require('dotenv').config();
+const uuid = require('uuid');
+const bcrypt = require('bcrypt');
+
 const User = require('../models/user');
+const ForgotPassword = require('../models/forgot-password');
 
 
 async function forgotpassword(req, res){
     try{
     const email = req.body.email;
     const user = await User.findOne({where: {email: email}});
-    
+    if(user){
+        const id  = uuid.v4();
+    await ForgotPassword.create({id: id, active: true, userId: user.id})
     const client = Sib.ApiClient.instance
     const apiKey = client.authentications['api-key']
     
@@ -17,7 +23,7 @@ async function forgotpassword(req, res){
     
     
     const sender = {
-        email: '****',
+        email: 'dilanaam600@gmail.com',
     
     }
     
@@ -26,22 +32,99 @@ async function forgotpassword(req, res){
             email: user.email,
         },
     ]
-    
-    tranEmail.sendTransacEmail({
+
+     await tranEmail.sendTransacEmail({
         sender,
         to: receviers,
         subject: 'Reset your password',
         textContent: `Please click this is from original`,
+        htmlContent: `<a href="http://localhost:3000/password/resetpassword/${id}">Reset password</a>`
     })
     res.json({message: "Reset Password Link Sent"})
-  }
-  catch(err){
+}
+else{
+    res.json({message: "User Not Found"})
+}
+
+}
+catch(err){
     console.log(err);
-    res.json({message: "Email Not Found"});
+    return res.json({ message: "Something Went Wrong"});
   }
+  
 }
 
 
+async function resetpassword(req, res){
+    
+    const id =  req.params.id;
+    const forgotpasswordrequest = await ForgotPassword.findOne({ where : { id }});
+        if(forgotpasswordrequest){
+            forgotpasswordrequest.update({ active: false});
+            res.status(200).send(`<!DOCTYPE html>
+               
+                                    <title>Reset Password</title>
+                                   
+                                    <script>
+                                        function formsubmitted(e){
+                                            e.preventDefault();
+                                            console.log('called')
+                                        }
+                                    </script>
+                                    </head>
+                                    <body>
+                                    <form action="/password/updatepassword/${id}" method="get">
+                                        <label for="newpassword">Enter New password</label>
+                                        <input name="newpassword" type="password" required></input>
+                                        <button>Reset Password</button>
+                                    </form>
+                                    </body>
+                                </html>`
+                                )
+            res.end()
+
+        }
+   
+}
+
+
+async function updatepassword (req, res){
+    try {
+        const { newpassword } = req.query;
+        const { id } = req.params;
+       const resetpasswordrequest = await ForgotPassword.findOne({ where : { id: id }});
+       const user = await User.findOne({where: { id : resetpasswordrequest.userId}});
+            if(user) {
+
+                    const saltRounds = 10;
+                    bcrypt.genSalt(saltRounds, function(err, salt) {
+                        if(err){
+                            console.log(err);
+                            throw new Error(err);
+                        }
+                        bcrypt.hash(newpassword, salt, function(err, hash) {
+                            // Store hash in your password DB.
+                            if(err){
+                                console.log(err);
+                                throw new Error(err);
+                            }
+                            user.update({ password: hash }).then(() => {
+                                res.status(201).json({message: 'Successfuly update the new password'})
+                            })
+                        });
+                    });
+            } else{
+                return res.status(404).json({ error: 'No user Exists', success: false})
+            }
+           
+    } catch(error){
+        return res.status(403).json({ error, success: false } )
+    }
+
+}
+
 module.exports = {
-   forgotpassword
+   forgotpassword,
+   resetpassword,
+   updatepassword
 }
