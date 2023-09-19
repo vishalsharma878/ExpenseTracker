@@ -74,3 +74,8 @@ button {
 button:hover {
     background-color: #555;
 }
+
+#url {
+    width: 90%;
+    margin-left: 60px;
+}

@@ -1,6 +1,8 @@
+const token  = localStorage.getItem('token');
 document.addEventListener("DOMContentLoaded", () => {
     const dateFilter = document.getElementById("dateFilter");
     const downloadButton = document.getElementById("downloadButton");
+
 
     
     dateFilter.addEventListener("change", () => {
@@ -22,12 +24,10 @@ document.addEventListener("DOMContentLoaded", () => {
 async function updateData(dateRange) {
     try {
         
-        const response = await axios.get(`/api/expenses?dateRange=${dateRange}`);
+        const response = await axios.get(`http://localhost:3000/expenses/for-report/${dateRange}`, {headers: {"Authorization": token}});
 
-        // Handle the API response data
         const data = response.data;
 
-        // Clear previous data if any
         const expenseTable = document.getElementById("expenseTable");
         expenseTable.innerHTML = "";
         const thead = document.createElement("thead");
@@ -43,7 +43,7 @@ async function updateData(dateRange) {
        
          data.forEach((entry) => {
             const row = document.createElement("tr");
-            row.innerHTML = `<td></td><td></td><td></td><td></td>`;
+            row.innerHTML = `<td>${entry.createdAt}</td><td>${entry.expenseAmount}</td><td>${entry.description}</td><td>${entry.category}</td>`;
             expenseTable.appendChild(row);
         });
     } catch (error) {
@@ -55,17 +55,15 @@ async function updateData(dateRange) {
 async function downloadExpenses() {
     try {
         
-        const response = await axios.get("/api/expenses/download");
+        const response = await axios.get("http://localhost:3000/expenses/download", {headers: {"Authorization": token}});
 
         
         const csvData = response.data;
 
-        // Create a blob from the CSV data
-        const blob = new Blob([csvData], { type: "text/csv" });
 
         // Create a temporary download link and trigger the download
-        const downloadLink = document.createElement("a");
-        downloadLink.href = window.URL.createObjectURL(blob);
+         const downloadLink = document.createElement("a");
+        downloadLink.href = csvData.fileURL;
         downloadLink.download = "expenses.csv";
         downloadLink.click();
     } catch (error) {
@@ -73,3 +71,37 @@ async function downloadExpenses() {
         console.error(error.message);
     }
 }
+
+async function getExpensesUrls(){
+    try {
+        
+        const response = await axios.get(`http://localhost:3000/expenses/file-urls`, {headers: {"Authorization": token}});
+
+        const data = response.data;
+
+        const urlTable = document.getElementById("url");
+        urlTable.innerHTML = "";
+        const thead = document.createElement("thead");
+        thead.innerHTML = `
+            <tr>
+                <th>S.No.</th>
+                <th>Previous Downloaded Urls</th>
+                
+            </tr>
+        `;
+        urlTable.appendChild(thead);
+        let sNo = 1;
+         data.forEach((entry) => {
+            const row = document.createElement("tr");
+            row.innerHTML = `<td>${sNo}</td><td>${entry.url}</td>`;
+            sNo++;
+            urlTable.appendChild(row);
+        });
+    } catch (error) {
+        // Handle errors, e.g., display an error message
+        console.error(error.message);
+    } 
+}
+
+getExpensesUrls();
+
