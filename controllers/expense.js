@@ -8,9 +8,9 @@ const ExpensesUrls = require('../models/file-url');
 
 function uploadToS3(data, fileName){
     
-   const BUCKET_NAME = 'expensetracker321';
-   const IAM_USER_KEY = 'AKIAZCCWVTIGZCGHLU3N';
-   const IAM_USER_SECRET = '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';
+   const BUCKET_NAME = '';
+   const IAM_USER_KEY = '';
+   const IAM_USER_SECRET = '';
 
    let s3bucket = new AWS.S3({
     accessKeyId: IAM_USER_KEY,
