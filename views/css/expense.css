@@ -50,7 +50,7 @@ header {
 }
 
 .container{
-    background-color: #2287ac; /* Background color for the form container */
+    background-color: #23a9b5; /* Background color for the form container */
     border-radius: 8px;
     display: flex;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -76,7 +76,7 @@ label {
 
 input[type="text"],
 input[type="number"],
-select, #category {
+ #category {
     width: 90%;
     padding: 8px;
     margin-bottom: 10px;
@@ -102,6 +102,13 @@ button:hover, #button:hover {
 
 button{
     cursor: pointer;
+}
+
+#ChooseExpenses{
+   width: 7%;
+   padding: 8px;
+   font-size: medium;
+   
 }
 
 #pagination {

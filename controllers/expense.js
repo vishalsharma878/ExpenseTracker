@@ -112,10 +112,12 @@ exports.deleteData = async (req, res) => {
 
 
 //Get the Expense Data
-let itemPerPage = 10;
+
 exports.getData = async (req, res) => {
   try {
-    const page = Number(req.params.page);
+    let itemPerPage = Number(req.params.chooseExpenses);
+       console.log(itemPerPage);
+        const page = Number(req.params.page);
     const totalExpenses = await expense.count();
     const data = await req.user.getExpenses({
       offset: (page - 1) * itemPerPage,

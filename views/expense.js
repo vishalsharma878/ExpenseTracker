@@ -152,14 +152,23 @@ rzpl.on('payment.failed', function(res){
 
 checkPremiumStatus();
 
+const chooseExpenses = document.getElementById('ChooseExpenses');
+chooseExpenses.addEventListener('change', () => {
+    const value = chooseExpenses.value;
+    localStorage.setItem('chooseExpense', value);
+})
+let chooseExpense = localStorage.getItem('chooseExpense');
+if(!chooseExpense){
+    chooseExpense = 10;
+}
+
 function showPagination({currentPage, hasNextPage, nextPage, hasPreviousPage, previousPage, lastPage}){
-    
     const pagination = document.getElementById('pagination');
     pagination.innerHTML = '';
     if(hasPreviousPage) {
         const btn1 = document.createElement('button');
         btn1.innerHTML = previousPage
-        btn1.addEventListener('click', () => paginationExpenses(previousPage))
+        btn1.addEventListener('click', () => paginationExpenses(previousPage ))
         pagination.appendChild(btn1);
     }
 
@@ -175,7 +184,7 @@ function showPagination({currentPage, hasNextPage, nextPage, hasPreviousPage, pr
     }
 }
 function paginationExpenses(page){
-    axios.get(`http://localhost:3000/expense/get/${page}`, {headers: {
+    axios.get(`http://localhost:3000/expense/get/${page}/${chooseExpense}`, {headers: {
     "Authorization": token
 }})
     .then(res => {
@@ -188,8 +197,8 @@ function paginationExpenses(page){
 // Get Data
 document.addEventListener('DOMContentLoaded', () => {
     let currentPage = 1;
-
-axios.get(`http://localhost:3000/expense/get/${currentPage}`, {headers: {
+    
+axios.get(`http://localhost:3000/expense/get/${currentPage}/${chooseExpense}`, {headers: {
     "Authorization": token
 }})
     .then(res => {
@@ -198,6 +207,7 @@ axios.get(`http://localhost:3000/expense/get/${currentPage}`, {headers: {
     })
     .catch(err => alert(err));
 })
+
 function printData(obj) {
     expenseData.innerHTML = '';
     for (let i = 0; i < obj.length; i++) {
