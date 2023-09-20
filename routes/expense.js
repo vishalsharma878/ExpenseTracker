@@ -10,7 +10,7 @@ const user = require('../models/user');
 
 userRoutes.post('/expense', userAuth.auth, expenseController.expenseData);
 
-userRoutes.get('/expense/get', userAuth.auth, expenseController.getData);
+userRoutes.get('/expense/get/:page', userAuth.auth, expenseController.getData);
 
 userRoutes.delete('/delete/:id', userAuth.auth, expenseController.deleteData);
 

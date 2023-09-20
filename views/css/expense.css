@@ -7,37 +7,49 @@ body {
 
 header {
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    height: 50px;
-    padding: 10px 40px;
+    height: 55px;
+    padding: 10px 20px;
     background-color: #4f89b3;
     color: #fff;
 }
-#leader-board {
-    background-color: #FF5733;
-    color: #fff;
+#leader-board{
+    background-color: #4f89b3;
+    color: #ffffff;
     align-content: center;
     padding: 10px 20px;
+    font-size: 14px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#report{
+    background-color:#4f89b3;
+    color: #fff;
+    align-content: center;
+    padding: 10px;
+    font-size: 14px;
     border: none;
     border-radius: 5px;
     cursor: pointer;
 }
 
 #buyPremiumButton {
-    background-color: #FF5733;
+    background-color: #4f89b3;
     color: #fff;
-    padding: 10px 20px;
+    font-size: 14px;
+    margin-left: 20px;
     border: none;
     border-radius: 5px;
     cursor: pointer;
 }
 
-#buyPremiumButton:hover {
-    background-color: #FF7855;
+#buyPremiumButton:hover, #report:hover, #leader-board:hover {
+    color: #0911f3;
 }
 
-.container {
+.container{
     background-color: #2287ac; /* Background color for the form container */
     border-radius: 8px;
     display: flex;
@@ -65,8 +77,8 @@ label {
 input[type="text"],
 input[type="number"],
 select, #category {
-    width: 100%;
-    padding: 10px;
+    width: 90%;
+    padding: 8px;
     margin-bottom: 10px;
     border: 1px solid #ccc;
     border-radius: 4px;
@@ -74,28 +86,33 @@ select, #category {
 
 #button {
     display: block;
-    width: 100%;
+    width: 50%;
+    margin-left: 25%;
     padding: 10px;
-    background-color: #2304eb;
+    background-color: #FF7855;
     color: #fff;
     border: none;
     border-radius: 4px;
     cursor: pointer;
 }
 
-button:hover {
-    background-color: #0056b3;
+button:hover, #button:hover {
+    background-color: #ed0909;
 }
 
-#expenseData {
-    background-color: #fff; /* Background color for the list container */
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    padding: 20px;
-    margin: 20px;
-    list-style: none;
-    margin-bottom: 10px;
+button{
+    cursor: pointer;
 }
+
+#pagination {
+    display: flex;
+    justify-content: center; 
+    align-items: flex-end; /* Align buttons to the bottom of the card */
+    margin-top: 20px; /* Push buttons to the bottom */
+}
+
+/* Individual button styles (optional) */
+
 /* Responsive Styles */
 @media screen and (max-width: 888px) {
     .container {

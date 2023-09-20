@@ -36,40 +36,70 @@ form.addEventListener('submit', storeData);
 }
 
 // Function to append data to the list
+const expenseData = document.getElementById('expenseData')
 function appendDataToList(amount, description, category, id) {
-    let li = document.createElement('li');
-    const expenseData = document.getElementById('expenseData')
-    li.innerHTML = `
-        <strong>Amount:</strong> $${amount}, 
-        <strong>Description:</strong> ${description}, 
-        <strong>Category:</strong> ${category}
-    `;
+
+    
+    const row = document.createElement('div');
+        row.classList.add('expenses-row');
+
+        const positionCol = document.createElement('div');
+        positionCol.classList.add('amount-col');
+        positionCol.textContent = amount;
+
+        const nameCol = document.createElement('div');
+        nameCol.classList.add('description-col');
+        nameCol.textContent = description;
+
+        const totalExpenseCol = document.createElement('div');
+        totalExpenseCol.classList.add('category-col');
+        totalExpenseCol.textContent = category;
+
+        const button = document.createElement('button');
+        button.classList.add('button');
+        button.textContent = 'Delete';
+
+        row.appendChild(positionCol);
+        row.appendChild(nameCol);
+        row.appendChild(totalExpenseCol);
+        row.appendChild(button);
 
     // Delete button
-    let button = document.createElement('button');
-    button.appendChild(document.createTextNode('Delete'))
     button.addEventListener('click', function () {
-        expenseData.removeChild(li);
+        expenseData.removeChild(row);
         axios.delete(`http://localhost:3000/delete/${id}`, {headers: {"Authorization": token}})
         .then((mesg) => alert(mesg.data.message))
         .catch(err => console.log(err));
         
     });
 
-    li.appendChild(button);
-    // li.appendChild(edit);
+    
+    
    
-    expenseData.appendChild(li);
+    expenseData.appendChild(row);
 }
 
 const buyPremiumButton = document.getElementById('buyPremiumButton');
 const premiumUser = document.getElementById('premium-status');
 const leaderBoard = document.getElementById('leader-board');
+const report = document.getElementById('report');
+
+
 let checkPremium = false;
 leaderBoard.addEventListener('click', () =>{
     checkPremiumStatus();
     if(checkPremium){
         window.location.href = '/views/leader-board.html'
+    }
+    else{
+        alert("This Feature is for Premium User");
+    }
+})
+
+report.addEventListener('click', () =>{
+    checkPremiumStatus();
+    if(checkPremium){
+        window.location.href = '/views/report.html'
     }
     else{
         alert("This Feature is for Premium User");
@@ -121,19 +151,59 @@ rzpl.on('payment.failed', function(res){
 }
 
 checkPremiumStatus();
-// Get Data
-document.addEventListener('DOMContentLoaded', () => {
-axios.get('http://localhost:3000/expense/get', {headers: {
+
+function showPagination({currentPage, hasNextPage, nextPage, hasPreviousPage, previousPage, lastPage}){
+    
+    const pagination = document.getElementById('pagination');
+    pagination.innerHTML = '';
+    if(hasPreviousPage) {
+        const btn1 = document.createElement('button');
+        btn1.innerHTML = previousPage
+        btn1.addEventListener('click', () => paginationExpenses(previousPage))
+        pagination.appendChild(btn1);
+    }
+
+    const btn2 = document.createElement('button');
+    btn2.innerHTML = `<h3>${currentPage}</h3>`;
+    btn2.addEventListener('click', () => paginationExpenses(currentPage))
+    pagination.appendChild(btn2);
+    if(hasNextPage){
+        const btn3 = document.createElement('button');
+        btn3.innerHTML = nextPage;
+        btn3.addEventListener('click', () => paginationExpenses(nextPage))
+        pagination.appendChild(btn3); 
+    }
+}
+function paginationExpenses(page){
+    axios.get(`http://localhost:3000/expense/get/${page}`, {headers: {
     "Authorization": token
 }})
-    .then(res => printData(res.data))
+    .then(res => {
+        printData(res.data.expenses)
+        showPagination(res.data);
+    })
     .catch(err => alert(err));
- 
+
+}
+// Get Data
+document.addEventListener('DOMContentLoaded', () => {
+    let currentPage = 1;
+
+axios.get(`http://localhost:3000/expense/get/${currentPage}`, {headers: {
+    "Authorization": token
+}})
+    .then(res => {
+        printData(res.data.expenses)
+        showPagination(res.data);
+    })
+    .catch(err => alert(err));
+})
 function printData(obj) {
+    expenseData.innerHTML = '';
     for (let i = 0; i < obj.length; i++) {
 
         const d = obj[i];
         appendDataToList(d.expenseAmount, d.description, d.category, d.id);
     }
 }
-})
+

@@ -6,13 +6,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>Expense Tracker</title>
+    
     <link rel="stylesheet" href="./css/expense.css">
+    <link rel="stylesheet" href="./css/leader-board.css">
 </head>
 
 <body>
     <header>
-        <button id="leader-board">Leader Board</button>
-        <button id="buyPremiumButton" style="display: none;">Buy Premium</button>
+        <button id="leader-board">Leader Board 👑</button>
+        <button id="report">Report👑</button>
+        <button id="buyPremiumButton" style="display: none;">Buy Premium 👑</button>
         <p id="premium-status" style="display: none;">You are a Premium User</p>
     </header>
     <h3>Expense Tracker</h3>
@@ -43,10 +46,25 @@
             <button type="submit" id="button">Add expense</button>
         </form>
     </div>
+    <main class="main">
+    <div class="expenses">
+        <div class="expenses-row expenses-header">
+            <div class="amount-col">Amount</div>
+            <div class="description-col">Description</div>
+            <div class="category-col">Category</div>
+            <div class="button">Delete</div>
+        </div>
 
     <div id="expenseData">
+   
     </div>
+    <div id="pagination">
+    </div>
+</main>
 
+
+
+</div>
     <div id="leaderlist"></div>
     <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.4.0/axios.min.js"></script>

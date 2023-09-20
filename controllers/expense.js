@@ -112,9 +112,29 @@ exports.deleteData = async (req, res) => {
 
 
 //Get the Expense Data
+let itemPerPage = 10;
 exports.getData = async (req, res) => {
-    const data = await expense.findAll({where:{userId: req.user.id}})
-      res.status(200).json(data); // Set status code and send JSON response
+  try {
+    const page = Number(req.params.page);
+    const totalExpenses = await expense.count();
+    const data = await req.user.getExpenses({
+      offset: (page - 1) * itemPerPage,
+      limit: itemPerPage
+    });
+
+      res.status(200).json({
+        expenses: data,
+        currentPage: page,
+        hasNextPage: page * itemPerPage < totalExpenses,
+        nextPage: page + 1,
+        hasPreviousPage: page > 1,
+        previousPage: page - 1,
+      }); // Set status code and send JSON response
+    }
+    catch(err) {
+      console.log(err);
+      res.status(500).json({err: err});
+    }
   }
 
 //Get the expense data for the leadeboard

@@ -1,34 +1,40 @@
 /* styles.css */
 
-body {
+#leaderboardBody, main{
     font-family: Arial, sans-serif;
-    background-color: #1e8d9e;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    min-height: 100vh;
-    margin: 0;
+    margin-bottom: 40px;
 }
 
-.leaderboard {
-    background-color: #ad1d5b;
-    border: 1px solid #ddd;
-    border-radius: 5px;
+.leaderboard, .expenses {
+    background-color: #23a9b5;
+    border: 1px solid #dddddd;
+    border-radius: 10px;
     padding: 20px;
-    width: 800px;
+    width: 900px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
-.leaderboard-row {
+.leaderboard-row, .expenses-row {
     display: flex;
     justify-content: space-between;
     padding: 10px 0;
     border-bottom: 1px solid #ddd;
 }
 
-.leaderboard-header {
+.leaderboard-header, .expenses-header {
     font-weight: bold;
+}
+
+.position-col,
+.name-col,
+.total-expense-col,
+.button {
+    flex-basis: 30%;
+    text-align: center;
 }
 
 .position-col,
@@ -38,11 +44,30 @@ body {
     text-align: center;
 }
 
+.amount-col,
+.description-col,
+.category-col{
+    flex-basis: 20%;
+    text-align: center;
+}
+
+.button {
+    flex-basis: 5%;
+    text-align: center;
+    margin-right: 30px;
+    max-height: 30px;
+}
+
 .position-col {
     font-weight: bold;
 }
 
+
 .name-col,
-.total-expense-col {
+.total-expense-col,
+.amount-col,
+.description-col,
+.category-col,
+.button {
     font-size: 18px;
 }
