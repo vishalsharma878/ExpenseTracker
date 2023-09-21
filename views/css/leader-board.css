@@ -11,11 +11,12 @@
 
 .leaderboard, .expenses {
     background-color: #23a9b5;
-    border: 1px solid #dddddd;
-    border-radius: 10px;
-    padding: 20px;
-    width: 900px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 20px;
+  width: 70%; /* Use a relative width */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  margin-bottom: 20px;
 }
 
 .leaderboard-row, .expenses-row {

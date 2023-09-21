@@ -1,7 +1,12 @@
 const express = require('express');
+require('dotenv').config();
 const app = express();
+const fs = require('fs');
 const cors = require('cors');
 const bodyParser = require('body-parser');
+const helmet = require('helmet');
+const morgan = require('morgan');
+
 
 const sequelize = require('./utils/databasePath');
 const User  = require('./models/user');
@@ -14,8 +19,13 @@ const purchase = require('./routes/purchase');
 const resetPassword = require('./routes/reset-password');
 const expensesUrl = require('./models/file-url');
 
+const accessLogStream = fs.createWriteStream('access.log', {flags: 'a'});
+
 app.use(cors());
+app.use(helmet());
+app.use(morgan('combined', { stream: accessLogStream }));
 app.use(bodyParser.json());
+
 
 app.use(expense);
 app.use(purchase);

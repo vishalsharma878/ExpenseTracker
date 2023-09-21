@@ -8,9 +8,9 @@ const ExpensesUrls = require('../models/file-url');
 
 function uploadToS3(data, fileName){
     
-   const BUCKET_NAME = '';
-   const IAM_USER_KEY = '';
-   const IAM_USER_SECRET = '';
+   const BUCKET_NAME = process.env.BUCKET_NAME;
+   const IAM_USER_KEY = process.env.IAM_USER_KEY;
+   const IAM_USER_SECRET = process.env.IAM_USER_SECRET;
 
    let s3bucket = new AWS.S3({
     accessKeyId: IAM_USER_KEY,
@@ -116,9 +116,8 @@ exports.deleteData = async (req, res) => {
 exports.getData = async (req, res) => {
   try {
     let itemPerPage = Number(req.params.chooseExpenses);
-       console.log(itemPerPage);
         const page = Number(req.params.page);
-    const totalExpenses = await expense.count();
+    const totalExpenses = await expense.count({where:{userId:req.user.id}});
     const data = await req.user.getExpenses({
       offset: (page - 1) * itemPerPage,
       limit: itemPerPage

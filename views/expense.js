@@ -153,14 +153,18 @@ rzpl.on('payment.failed', function(res){
 checkPremiumStatus();
 
 const chooseExpenses = document.getElementById('ChooseExpenses');
-chooseExpenses.addEventListener('change', () => {
-    const value = chooseExpenses.value;
-    localStorage.setItem('chooseExpense', value);
-})
-let chooseExpense = localStorage.getItem('chooseExpense');
-if(!chooseExpense){
-    chooseExpense = 10;
+let chooseExpense = localStorage.getItem('chooseExpense'); // Get the initial value
+
+// Set the initial selected value in the dropdown
+if (chooseExpense) {
+  chooseExpenses.value = chooseExpense;
 }
+
+chooseExpenses.addEventListener('change', () => {
+  const value = chooseExpenses.value;
+  localStorage.setItem('chooseExpense', value);
+  chooseExpense = value; // Update the JavaScript variable with the new value
+});
 
 function showPagination({currentPage, hasNextPage, nextPage, hasPreviousPage, previousPage, lastPage}){
     const pagination = document.getElementById('pagination');

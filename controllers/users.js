@@ -19,7 +19,7 @@ async function userData(req, res){
 }
 
 function generateAccessToken(id) {
-  return jwt.sign({userId: id}, '939ehjei838');
+  return jwt.sign({userId: id}, process.env.JWT_TOKEN);
 }
 
 async function loginCheck(req, res){
