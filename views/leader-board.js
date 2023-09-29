@@ -1,5 +1,5 @@
 async function getDataForLeaderBoard() {
-    const res = await axios.get('http://localhost:3000/premium/leader-board')
+    const res = await axios.get('http://35.154.167.41:3000/premium/leader-board')
 
     const leaderboardContainer = document.getElementById('leaderboard-data');
     const obj = res.data;
