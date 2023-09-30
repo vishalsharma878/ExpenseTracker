@@ -38,7 +38,7 @@ async function forgotpassword(req, res){
         to: receviers,
         subject: 'Reset your password',
         textContent: `Please click this is from original`,
-        htmlContent: `<a href="http://localhost:3000/password/resetpassword/${id}">Reset password</a>`
+        htmlContent: `<a href="http://13.233.147.197:3000/password/resetpassword/${id}">Reset password</a>`
     })
     res.json({message: "Reset Password Link Sent"})
 }
