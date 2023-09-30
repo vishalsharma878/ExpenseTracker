@@ -32,9 +32,6 @@ app.use(expense);
 app.use(purchase);
 app.use(resetPassword);
 
-// app.use((req, res) => {
-//   res.sendFile(path.join(__dirname, `views/${req.url}`))
-// })
 
 User.hasMany(Expense);
 Expense.belongsTo(User);
