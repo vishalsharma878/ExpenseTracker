@@ -24,7 +24,7 @@ document.addEventListener("DOMContentLoaded", () => {
 async function updateData(dateRange) {
     try {
         
-        const response = await axios.get(`http://13.233.147.197:3000/expenses/for-report/${dateRange}`, {headers: {"Authorization": token}});
+        const response = await axios.get(`http://localhost:3000/expenses/for-report/${dateRange}`, {headers: {"Authorization": token}});
 
         const data = response.data;
 
@@ -55,7 +55,7 @@ async function updateData(dateRange) {
 async function downloadExpenses() {
     try {
         
-        const response = await axios.get("http://13.233.147.197:3000/expenses/download", {headers: {"Authorization": token}});
+        const response = await axios.get("http://localhost:3000/expenses/download", {headers: {"Authorization": token}});
 
         
         const csvData = response.data;
@@ -75,7 +75,7 @@ async function downloadExpenses() {
 async function getExpensesUrls(){
     try {
         
-        const response = await axios.get(`http://13.233.147.197:3000/expenses/file-urls`, {headers: {"Authorization": token}});
+        const response = await axios.get(`http://localhost:3000/expenses/file-urls`, {headers: {"Authorization": token}});
 
         const data = response.data;
 

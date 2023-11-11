@@ -9,9 +9,11 @@ async function userData(req, res){
       const hashPassword = await bcrypt.hash(password, 10);
       userInfo.password = hashPassword;
       
-      const newUser = await user.create(userInfo);
+      const newUser = await user.create({name: req.body.name, email: req.body.email, password: hashPassword});
+      await newUser.save();
       res.status(201).json(newUser);
     }
+  
     catch(error){
      console.log(error); // Log the actual error object for debugging
      res.status(500).json({ error: "Internal server error" }); 
@@ -27,8 +29,7 @@ async function loginCheck(req, res){
     const email = req.body.email;
     const password = req.body.password;
 
-    const userRecord = await user.findOne({
-      where: { email: email }
+    const userRecord = await user.findOne( { email: email
     });
 
     if (!userRecord) {

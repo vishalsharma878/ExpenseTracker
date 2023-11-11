@@ -29,7 +29,7 @@ form.addEventListener('submit', function(e) {
     signup = true;
     const signupFormData = getSignUpLoginData();
     form.reset();
-    axios.post('http://13.233.147.197:3000/user/signup', signupFormData)
+    axios.post('http://localhost:3000/user/signup', signupFormData)
     .then(res => console.log(res.data))
     .catch(err => alert("User already exist"));
 })
@@ -43,11 +43,11 @@ login.addEventListener('submit', async function (e) {
     login.reset();
     
     try {
-        const res = await axios.post('http://13.233.147.197:3000/user/login', loginFormData);
+        const res = await axios.post('http://localhost:3000/user/login', loginFormData);
         alert(res.data.message);
         
         localStorage.setItem('token', res.data.token);
-        window.location.href = '/expense.html';
+        window.location.href = '/views/expense.html';
         console.log("after" +res.data);
     }
      catch (err) {

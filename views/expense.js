@@ -22,13 +22,13 @@ form.addEventListener('submit', storeData);
 
    try{
    
-   const res = await axios.post('http://13.233.147.197:3000/expense', obj, {headers: {"Authorization": token}})
+   const res = await axios.post('http://localhost:3000/expense', obj, {headers: {"Authorization": token}})
         
-    appendDataToList(amount, description, category, res.data.id);
+    appendDataToList(amount, description, category, res.data._id);
 
     }
     catch(err){
-       alert(err.response.error);
+       alert(err.response.error+ " yes");
     }
     
 
@@ -67,7 +67,7 @@ function appendDataToList(amount, description, category, id) {
     // Delete button
     button.addEventListener('click', function () {
         expenseData.removeChild(row);
-        axios.delete(`http://13.233.147.197:3000/delete/${id}`, {headers: {"Authorization": token}})
+        axios.delete(`http://localhost:3000/delete/${id}`, {headers: {"Authorization": token}})
         .then((mesg) => alert(mesg.data.message))
         .catch(err => console.log(err));
         
@@ -89,7 +89,7 @@ let checkPremium = false;
 leaderBoard.addEventListener('click', () =>{
     checkPremiumStatus();
     if(checkPremium){
-        window.location.href = '/leader-board.html'
+        window.location.href = '/views/leader-board.html'
     }
     else{
         alert("This Feature is for Premium User");
@@ -99,7 +99,7 @@ leaderBoard.addEventListener('click', () =>{
 report.addEventListener('click', () =>{
     checkPremiumStatus();
     if(checkPremium){
-        window.location.href = '/report.html'
+        window.location.href = '/views/report.html'
     }
     else{
         alert("This Feature is for Premium User");
@@ -107,7 +107,7 @@ report.addEventListener('click', () =>{
 })
 //Check if the user is premium user or not
 function checkPremiumStatus(){
-    axios.get('http://13.233.147.197:3000/premium/check-status', {headers: {
+    axios.get('http://localhost:3000/premium/check-status', {headers: {
         "Authorization": token
     }})
     .then((res) => {
@@ -127,14 +127,14 @@ function checkPremiumStatus(){
 
 //Buy Premium Button
 buyPremiumButton.onclick = async function(e){
-  const res = await axios.get('http://13.233.147.197:3000/premiummembership', {headers: {
+  const res = await axios.get('http://localhost:3000/premiummembership', {headers: {
     "Authorization": token
 }})
 let options = {
     "key": res.data.key_id,
     "order_id": res.data.order.id,
     "handler": async function (res){
-       await axios.post('http://13.233.147.197:3000/purchase/updatestatus', {order_id: options.order_id, payment_id: res.razorpay_payment_id}, {headers: {"Authorization": token}})
+       await axios.post('http://localhost:3000/purchase/updatestatus', {order_id: options.order_id, payment_id: res.razorpay_payment_id}, {headers: {"Authorization": token}})
         alert("You are now Premium user")
         checkPremiumStatus();
     },
@@ -158,6 +158,9 @@ let chooseExpense = localStorage.getItem('chooseExpense'); // Get the initial va
 // Set the initial selected value in the dropdown
 if (chooseExpense) {
   chooseExpenses.value = chooseExpense;
+}
+if(!chooseExpense){
+    chooseExpense = chooseExpenses.value;
 }
 
 chooseExpenses.addEventListener('change', () => {
@@ -188,7 +191,7 @@ function showPagination({currentPage, hasNextPage, nextPage, hasPreviousPage, pr
     }
 }
 function paginationExpenses(page){
-    axios.get(`http://13.233.147.197:3000/expense/get/${page}/${chooseExpense}`, {headers: {
+    axios.get(`http://localhost:3000/expense/get/${page}/${chooseExpense}`, {headers: {
     "Authorization": token
 }})
     .then(res => {
@@ -202,7 +205,7 @@ function paginationExpenses(page){
 document.addEventListener('DOMContentLoaded', () => {
     let currentPage = 1;
     
-axios.get(`http://13.233.147.197:3000/expense/get/${currentPage}/${chooseExpense}`, {headers: {
+axios.get(`http://localhost:3000/expense/get/${currentPage}/${chooseExpense}`, {headers: {
     "Authorization": token
 }})
     .then(res => {
@@ -217,7 +220,7 @@ function printData(obj) {
     for (let i = 0; i < obj.length; i++) {
 
         const d = obj[i];
-        appendDataToList(d.expenseAmount, d.description, d.category, d.id);
+        appendDataToList(d.expenseAmount, d.description, d.category, d._id);
     }
 }
 

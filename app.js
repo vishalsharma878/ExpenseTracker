@@ -1,6 +1,7 @@
 const express = require('express');
 require('dotenv').config();
 const app = express();
+const mongoose = require('mongoose');
 const fs = require('fs');
 const cors = require('cors');
 const bodyParser = require('body-parser');
@@ -8,9 +9,8 @@ const helmet = require('helmet');
 const morgan = require('morgan');
 
 
-const sequelize = require('./utils/databasePath');
 const User  = require('./models/user');
-const Expense = require('./models/database');
+const Expense = require('./models/expense');
 const Order = require('./models/purchase');
 const forgotPassword = require('./models/forgot-password');
 
@@ -33,22 +33,10 @@ app.use(purchase);
 app.use(resetPassword);
 
 
-User.hasMany(Expense);
-Expense.belongsTo(User);
-
-User.hasMany(Order);
-Order.belongsTo(User);
-
-User.hasMany(forgotPassword);
-forgotPassword.belongsTo(User);
-
-User.hasMany(expensesUrl);
-expensesUrl.belongsTo(User);
-
-sequelize
-  .sync()
+mongoose
+  .connect(process.env.MONGO_CLIENT)
   .then(result => {
- 
+    console.log("Connected")
     app.listen(process.env.PORT || 3000);
   })
   .catch(err => {

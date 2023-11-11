@@ -16,10 +16,10 @@ const purchasePremimum = async (req, res) => {
                 throw new Error(JSON.stringify(err));
                 
             }
-            req.user.createOrder({orderId: order.id, status: 'PENDING'}).then(() =>{
+            Order.create({orderId: order.id, status: 'PENDING', userId: req.user._id}).then(() =>{
                 return res.status(201).json({order, key_id : rzp.key_id})});
         }).catch(err => {
-            throw new Error("Eroskmd "+ err)
+            throw new Error("Razorpay Error: "+ err)
         })
 
     }catch(err) {
@@ -31,15 +31,15 @@ const purchasePremimum = async (req, res) => {
 const updateStatus = async (req, res) => {
         const {payment_id, order_id}  = req.body;
         try {
-            const order = await Order.findOne({ where: { orderId: order_id } });
+            const order = await Order.findOne({ orderId: order_id });
         
             if (!order) {
                  return res.status(404).json({ success: false, message: "Order not found" });
                  
             }
         
-            const updateOrderPromise = order.update({ paymentId: payment_id, status: 'SUCCESSFUL' });
-            const updateUserPromise = req.user.update({ isPremiumUser: true });
+            const updateOrderPromise = order.updateOne({ paymentId: payment_id, status: 'SUCCESSFUL' });
+            const updateUserPromise = req.user.updateOne({ isPremiumUser: true });
         
             await Promise.all([updateOrderPromise, updateUserPromise]);
             
@@ -51,9 +51,12 @@ const updateStatus = async (req, res) => {
 }
 
 const checkStatus = (req, res) => {
-    User.findOne({where: {isPremiumUser: true, id: req.user.id}})
-    .then((user) => res.json(user))
+    User.findOne({isPremiumUser: true, _id: req.user._id})
+    .then((user) => {
+        res.json(user)
+    })
     .catch (err => {
+        console.log(err)
         res.status(500).json({ message: 'Internal server error', error: err });
     })
 }

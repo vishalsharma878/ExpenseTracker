@@ -10,10 +10,10 @@ const ForgotPassword = require('../models/forgot-password');
 async function forgotpassword(req, res){
     try{
     const email = req.body.email;
-    const user = await User.findOne({where: {email: email}});
+    const user = await User.findOne({email: email});
     if(user){
         const id  = uuid.v4();
-    await ForgotPassword.create({id: id, active: true, userId: user.id})
+    await ForgotPassword.create({_id: id, active: true, userId: user.id})
     const client = Sib.ApiClient.instance
     const apiKey = client.authentications['api-key']
     
@@ -38,7 +38,7 @@ async function forgotpassword(req, res){
         to: receviers,
         subject: 'Reset your password',
         textContent: `Please click this is from original`,
-        htmlContent: `<a href="http://13.233.147.197:3000/password/resetpassword/${id}">Reset password</a>`
+        htmlContent: `<a href="http://localhost:3000/password/resetpassword/${id}">Reset password</a>`
     })
     res.json({message: "Reset Password Link Sent"})
 }
@@ -58,9 +58,9 @@ catch(err){
 async function resetpassword(req, res){
     
     const id =  req.params.id;
-    const forgotpasswordrequest = await ForgotPassword.findOne({ where : { id }});
+    const forgotpasswordrequest = await ForgotPassword.findOne({_id: id });
         if(forgotpasswordrequest){
-            forgotpasswordrequest.update({ active: false});
+            forgotpasswordrequest.updateOne({ active: false});
             res.status(200).send(`<!DOCTYPE html>
                
                                     <title>Reset Password</title>
@@ -92,8 +92,8 @@ async function updatepassword (req, res){
     try {
         const { newpassword } = req.query;
         const { id } = req.params;
-       const resetpasswordrequest = await ForgotPassword.findOne({ where : { id: id }});
-       const user = await User.findOne({where: { id : resetpasswordrequest.userId}});
+       const resetpasswordrequest = await ForgotPassword.findOne({ _id: id });
+       const user = await User.findOne({ _id : resetpasswordrequest.userId });
             if(user) {
 
                     const saltRounds = 10;
@@ -108,7 +108,7 @@ async function updatepassword (req, res){
                                 console.log(err);
                                 throw new Error(err);
                             }
-                            user.update({ password: hash }).then(() => {
+                            user.updateOne({ password: hash }).then(() => {
                                 res.status(201).json({message: 'Successfuly update the new password'})
                             })
                         });
